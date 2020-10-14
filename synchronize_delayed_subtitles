@@ -1,0 +1,27 @@
+import re
+from re import findall
+from datetime import timedelta
+import copy
+
+time_pattern = re.compile(r"\d{2}:\d{2}:\d{2}\,\d{3}")
+
+def shift_subtitles(delay, file):
+    # file = srt file with subtitles
+    # delay = delay of the subtitles, in seconds
+    delay_timedelta = timedelta(seconds = delay)
+
+    with open(".../.../.../.../new_file.srt", "w") as new_doc:
+
+        with open(file) as doc:
+            for line in doc:
+                for m in findall(time_pattern, line):
+                    m_timedelta = timedelta(hours = int(m[0:2]), minutes = int(m[3:5]), seconds = int(m[6:8]), milliseconds = int(m[9:12]))
+                    m2 = str(m_timedelta - delay_timedelta)
+                    m2 = "0"+m2
+                    line = line.replace(m, m2)
+                    line = line.replace("000 ", " ")
+                    line = line.replace("000\n", "\n")
+                new_doc.write(line)
+    return("done")
+
+print(shift_subtitles(100, ".../.../.../.../subtitles.srt"))
